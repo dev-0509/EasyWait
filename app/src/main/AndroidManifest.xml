@@ -19,8 +19,7 @@
             android:name=".RegisterActivity"
             android:label="Let&apos;s Get Familiar :)"></activity>
         <activity
-            android:name=".LaunchActivity"
-            android:label="HOME | SmartQ">
+            android:name=".LaunchActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

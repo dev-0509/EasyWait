@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Base64DataException;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -61,10 +64,8 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
         final String token = data.getString( "token" );
 
         if( TextUtils.isEmpty( queuename ) ) {
-
             Toast.makeText( PublishActivity.this , "Please Specify a Queue Name !", Toast.LENGTH_LONG).show();
             return;
-
         }
 
         final StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -76,9 +77,9 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
 
                         try {
 
-                            view_qname.setText( response );
+                            //view_qname.setText( response );
                             //JSONObject json = new JSONObject(response);
-                            //Toast.makeText(PublishActivity.this,  response, Toast.LENGTH_LONG).show();
+                            Toast.makeText(PublishActivity.this,  response, Toast.LENGTH_LONG).show();
 
                         } catch ( Exception e) {
 
@@ -92,13 +93,25 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
+                        String json = "";
+                        String string = "";
                         NetworkResponse response = error.networkResponse;
 
                         if( response.statusCode == 401 ) {
 
+                            json = new String( response.data );
+
+                            try {
+                                JSONObject object = new JSONObject( json );
+                                string = object.toString();
+                            }
+                            catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
                             Intent i = new Intent(PublishActivity.this , RegisterActivity.class);
 
-                            Toast toast = Toast.makeText(PublishActivity.this , "Please Register :(" , Toast.LENGTH_LONG);
+                            Toast toast = Toast.makeText(PublishActivity.this , string, Toast.LENGTH_LONG);
                             toast.setGravity(Gravity.CENTER , 0 , 0);
                             toast.show();
 
@@ -114,11 +127,11 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
             }
 
             @Override
-            public Map<String , String> getHeaders() {
-                Map<String , String > headers = new HashMap<String, String>();
+            public Map<String , String> getHeaders() throws AuthFailureError {
+                Map<String , String> headers = new HashMap<>();
 
-                String auth = "Bearers " + token;
-                headers.put("Authorization" , auth );
+                String auth = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQzLCJpc3MiOiJodHRwOlwvXC9lYzItMzQtMjEwLTE2LTQwLnVzLXdlc3QtMi5jb21wdXRlLmFtYXpvbmF3cy5jb206ODAwMFwvYXBpXC9zaWdudXAiLCJpYXQiOjE0OTI1MzQ4OTAsImV4cCI6MTQ5MjUzODQ5MCwibmJmIjoxNDkyNTM0ODkwLCJqdGkiOiJhYjI3ZTM3ZGZiYTg4ZjRjZTk3MTdkODk4YjFiNzQ4MyJ9.6ZlxBXUBuyL8hawxZihKQX8hL0RYTCs9x4dXrAgIl3w";
+                headers.put("Authorization", auth);
 
                 return headers;
             }
@@ -137,6 +150,8 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
             createQueue();
 
         }
+
+        Toast.makeText(PublishActivity.this , "hello" , Toast.LENGTH_LONG).show();
 
     }
 }

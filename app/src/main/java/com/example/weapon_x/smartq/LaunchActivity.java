@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -38,6 +39,7 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
 
     private Button viewButton;
     private Button publishButton;
+    private ImageView register;
 
     private String queue;
 
@@ -52,10 +54,11 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
 
         viewButton = (Button) findViewById(R.id.buttonView);
         publishButton = (Button) findViewById(R.id.buttonPublish);
+        register = (ImageView) findViewById(R.id.homeImage);
 
         viewButton.setOnClickListener(this);
-
         publishButton.setOnClickListener( this );
+        register.setOnClickListener( this );
     }
 
     private void getQueue() {
@@ -72,6 +75,7 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
+
                     @Override
                     public void onResponse(String response) {
 
@@ -103,6 +107,7 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
         SharedPreferences shared = getSharedPreferences("MyPrefs" , Context.MODE_PRIVATE);
 
         String token = shared.getString( "token" , null );
+        //String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjI3LCJpc3MiOiJodHRwOlwvXC9lYzItMzQtMjEwLTE2LTQwLnVzLXdlc3QtMi5jb21wdXRlLmFtYXpvbmF3cy5jb206ODAwMFwvYXBpXC9zaWduaW4iLCJpYXQiOjE0OTI1MzA4MTgsImV4cCI6MTQ5MjUzNDQxOCwibmJmIjoxNDkyNTMwODE4LCJqdGkiOiJiZTQ4YzM0YjM4ODBhZWU0ZTNmNWQxNDgyNzI1MjEyZCJ9.zSMf5oEpPRt856LKJJ5FWZrpp5mjY-kDBK8EDXF47qw";
 
         if( token == null ) {
 
@@ -114,6 +119,8 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         else {
+
+            Toast.makeText(LaunchActivity.this, "Length : " + token.length(), Toast.LENGTH_LONG).show();
 
             Intent i = new Intent(LaunchActivity.this , PublishActivity.class);
 
@@ -131,6 +138,11 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
 
         if( view == publishButton ) {
             checkIfRegistered();
+        }
+
+        if ( view == register ) {
+            Intent i = new Intent(LaunchActivity.this , RegisterActivity.class);
+            startActivity( i );
         }
     }
 }
