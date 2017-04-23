@@ -7,9 +7,9 @@
     <string name="prompt_email">Got an Email ?</string>
     <string name="prompt_name">What should I call you ?</string>
     <string name="prompt_password">Your Password</string>
-    <string name="action_signup">NEW TO SMARTQ ?\n\nSIGNUP</string>
+    <string name="action_signup">Register</string>
     <string name="action_register">Register</string>
-    <string name="action_signin">Existing User ?\n\nSIGNIN</string>
+    <string name="action_signin">Login</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>

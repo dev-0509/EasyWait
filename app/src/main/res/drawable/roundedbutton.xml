@@ -6,4 +6,5 @@ android:shape="rectangle">
         android:bottomLeftRadius="50dp"  
         android:topRightRadius="50dp"
         android:topLeftRadius="50dp"/>
+    <stroke android:width="3px" android:color="#FF000000" />
 </shape>

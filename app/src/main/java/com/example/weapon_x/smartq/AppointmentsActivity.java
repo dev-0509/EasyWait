@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -30,8 +29,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.example.weapon_x.smartq.RegisterActivity.MyPreferences;
 
 public class AppointmentsActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -58,8 +55,6 @@ public class AppointmentsActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        final SharedPreferences shared = getSharedPreferences("MyPrefs" , Context.MODE_PRIVATE);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointments);
@@ -111,7 +106,6 @@ public class AppointmentsActivity extends AppCompatActivity implements View.OnCl
     private void populateListOfQueues () {
 
         final SharedPreferences shared = getSharedPreferences("MyPrefs" , Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = shared.edit();
 
         fetchAccessToken();
 

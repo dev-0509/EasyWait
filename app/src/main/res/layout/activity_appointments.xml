@@ -35,7 +35,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/roundedbutton"
+        android:background="@drawable/roundedbutton2"
         android:text="@string/bookappointment"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"

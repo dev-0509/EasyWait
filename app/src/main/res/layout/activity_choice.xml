@@ -8,49 +8,81 @@
     android:background="@drawable/background2"
     tools:context="com.example.weapon_x.smartq.ChoiceActivity">
 
-    <Button
-        android:id="@+id/buttonSignin"
-        android:text="@string/action_signin"
-        android:textColor="@color/black"
-        android:layout_width="168dp"
-        android:layout_height="75dp"
+    <ImageView
+        android:id="@+id/registerImage"
+        android:layout_width="77dp"
+        android:layout_height="63dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:alpha="0.3"
-        android:background="@drawable/roundedbutton2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.109"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.154" />
+        app:layout_constraintVertical_bias="0.888"
+        app:srcCompat="@drawable/ic_supervisor_account_black_48dp" />
+
+    <ImageView
+        android:id="@+id/loginImage"
+        android:layout_width="66dp"
+        android:layout_height="54dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.87"
+        app:srcCompat="@drawable/ic_account_circle_black_48dp"
+        app:layout_constraintHorizontal_bias="0.884" />
 
     <Button
         android:id="@+id/newUser"
-        android:layout_width="164dp"
-        android:layout_height="74dp"
+        android:layout_width="135dp"
+        android:layout_height="48dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:alpha="0.3"
         android:text="@string/action_signup"
-        android:background="@drawable/roundedbutton2"
+        android:background="@drawable/roundedbutton"
+        android:alpha="0.8"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.154" />
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/buttonSignin"
+        android:layout_width="135dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/roundedbutton"
+        android:alpha="0.8"
+        android:text="@string/action_signin"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/buttonAppointments"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/roundedbutton"
+        android:background="@drawable/roundedbutton2"
         android:text="@string/appointment_admin"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -62,7 +94,7 @@
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintVertical_bias="0.74"
+        app:layout_constraintVertical_bias="0.543"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp" />
 
@@ -76,7 +108,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/roundedbutton"
+        android:background="@drawable/roundedbutton2"
         android:text="@string/publish"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -84,7 +116,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.476" />
+        app:layout_constraintVertical_bias="0.277" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/homeFAB"
@@ -101,9 +133,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="8dp"
-        app:layout_constraintHorizontal_bias="0.974"
-        app:layout_constraintVertical_bias="0.982"
-        tools:layout_editor_absoluteY="442dp"
-        tools:layout_editor_absoluteX="310dp" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintVertical_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>

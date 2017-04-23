@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -33,10 +34,13 @@ public class ChoiceActivity extends AppCompatActivity implements View.OnClickLis
 
     String access_token;
 
-    private Button register;
+    private Button signup;
     private Button signin;
     private Button publishButton;
     private Button appointmentsButton;
+
+    private ImageView register;
+    private ImageView login;
 
     private FloatingActionButton home;
 
@@ -46,15 +50,20 @@ public class ChoiceActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice);
 
-        register = (Button) findViewById(R.id.newUser);
+        signup = (Button) findViewById(R.id.newUser);
         signin = (Button) findViewById(R.id.buttonSignin);
         publishButton = (Button) findViewById(R.id.buttonPublish);
         appointmentsButton = (Button) findViewById(R.id.buttonAppointments);
 
+        register = (ImageView) findViewById(R.id.registerImage);
+        login = (ImageView) findViewById(R.id.loginImage);
+
         home = (FloatingActionButton) findViewById(R.id.homeFAB);
 
-        register.setOnClickListener( this );
+        signup.setOnClickListener( this );
         signin.setOnClickListener( this );
+        register.setOnClickListener( this );
+        login.setOnClickListener( this );
         publishButton.setOnClickListener( this );
         home.setOnClickListener( this );
         appointmentsButton.setOnClickListener( this );
@@ -97,11 +106,6 @@ public class ChoiceActivity extends AppCompatActivity implements View.OnClickLis
                                 access_token = json.getString( "token" );
                                 editor.putString( "access_token" , access_token );
                                 editor.apply();
-
-                                Intent i = new Intent(ChoiceActivity.this , PublishActivity.class);
-
-                                i.putExtra( "token" , access_token );
-                                startActivity( i );
 
                             } catch ( Exception e) {
 
@@ -151,14 +155,14 @@ public class ChoiceActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick ( View view ) {
 
-        if ( view == register ) {
+        if ( view == signup || view == register ) {
 
             Intent i = new Intent(ChoiceActivity.this , RegisterActivity.class);
             startActivity( i );
 
         }
 
-        if ( view == signin ) {
+        if ( view == signin || view == login ) {
 
             Intent i = new Intent(ChoiceActivity.this , LoginActivity.class);
             startActivity( i );
@@ -168,6 +172,11 @@ public class ChoiceActivity extends AppCompatActivity implements View.OnClickLis
         if( view == publishButton ) {
 
             checkIfRegistered();
+
+            Intent i = new Intent(ChoiceActivity.this , PublishActivity.class);
+
+            i.putExtra( "token" , access_token );
+            startActivity( i );
 
         }
 
@@ -180,8 +189,10 @@ public class ChoiceActivity extends AppCompatActivity implements View.OnClickLis
 
         if ( view == appointmentsButton ) {
 
-            Intent i = new Intent(ChoiceActivity.this , AppointmentsActivity.class);
-            startActivity( i );
+            checkIfRegistered();
+
+            Intent i = new Intent(ChoiceActivity.this, AppointmentsActivity.class);
+            startActivity(i);
 
         }
     }
