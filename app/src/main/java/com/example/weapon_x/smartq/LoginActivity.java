@@ -1,5 +1,9 @@
 package com.example.weapon_x.smartq;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,13 +26,20 @@ import org.json.simple.parser.JSONParser;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.weapon_x.smartq.RegisterActivity.MyPreferences;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button button;
+
+    private FloatingActionButton home;
+
     private EditText email;
     private EditText password;
 
-    String usertoken;
+    private String access_token;
+    private String user_email;
+    private String user_pass;
 
     private String url = "http://ec2-34-210-16-40.us-west-2.compute.amazonaws.com:8000/api/signin";
 
@@ -43,13 +54,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         button = (Button) findViewById(R.id.buttonSignin);
 
+        home = (FloatingActionButton) findViewById(R.id.homeFAB);
+
         email = (EditText) findViewById(R.id.editUserEmail);
         password = (EditText) findViewById(R.id.editUserPassword);
 
         button.setOnClickListener( this );
+        home.setOnClickListener( this );
     }
 
-    private String loginUser() {
+    public void saveUserCredentials() {
+
+        SharedPreferences sharedpreferences = getSharedPreferences(MyPreferences, Context.MODE_APPEND);
+
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("token" , access_token);
+        editor.putString("email" , user_email);
+        editor.putString("password" , user_pass);
+        editor.apply();
+
+    }
+
+    private void loginUser() {
 
         final String useremail = email.getText().toString().trim();
         final String pass = password.getText().toString().trim();
@@ -58,14 +84,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         {
             // Email is empty
             Toast.makeText(this, "Missed your Email !", Toast.LENGTH_SHORT).show();
-            return null;
+            return;
         }
 
         if( TextUtils.isEmpty( pass ) )
         {
             // Password is empty
             Toast.makeText(this, "Missed your Password !", Toast.LENGTH_SHORT).show();
-            return null;
+            return;
         }
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -73,13 +99,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onResponse(String response) {
 
-                        JSONParser parser = new JSONParser();
-
                         try {
 
-                            JSONObject json = new JSONObject(response);
+                            JSONObject json = new JSONObject( response );
 
-                            usertoken = json.getString( "token" );
+                            access_token = json.getString( "token" );
+                            user_email = useremail;
+                            user_pass = pass;
+
+                            LoginActivity.this.saveUserCredentials();
+
+                            Toast.makeText(LoginActivity.this, "Welcome Back :)", Toast.LENGTH_LONG).show();
+
+                            finish();
 
                         } catch ( Exception e) {
 
@@ -92,7 +124,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(LoginActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this, "Invalid Credentials !", Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
@@ -107,17 +139,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         RequestQueue requestQueue = Volley.newRequestQueue( this );
         requestQueue.add( stringRequest );
-
-        return usertoken;
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View view) {
 
-        if( v == button ) {
-            usertoken = loginUser();
+        if( view == button ) {
+            loginUser();
+        }
 
-            Toast.makeText(LoginActivity.this, usertoken, Toast.LENGTH_LONG).show();
+        if( view == home ) {
+            Intent i = new Intent(LoginActivity.this , LaunchActivity.class);
+            startActivity( i );
         }
     }
 }

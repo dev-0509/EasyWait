@@ -3,16 +3,17 @@ package com.example.weapon_x.smartq;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,22 +27,15 @@ import org.json.simple.parser.JSONParser;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.weapon_x.smartq.RegisterActivity.MyPreferences;
-
 public class LaunchActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private String url = "http://ec2-34-210-16-40.us-west-2.compute.amazonaws.com:8000/api/queue/";
-
-    public static final String KEY_QUEUE = "queue";
+    private String view_queue_url = "http://ec2-34-210-16-40.us-west-2.compute.amazonaws.com:8000/api/queue/";
 
     private EditText queueid;
     private EditText label;
 
     private Button viewButton;
-    private Button publishButton;
-    private ImageView register;
-
-    private String queue;
+    private Button proceedButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,19 +47,18 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
         label = (EditText) findViewById(R.id.label);
 
         viewButton = (Button) findViewById(R.id.buttonView);
-        publishButton = (Button) findViewById(R.id.buttonPublish);
-        register = (ImageView) findViewById(R.id.homeImage);
+        proceedButton = (Button) findViewById(R.id.buttonProceed);
 
-        viewButton.setOnClickListener(this);
-        publishButton.setOnClickListener( this );
-        register.setOnClickListener( this );
+        viewButton.setOnClickListener( this );
+        proceedButton.setOnClickListener( this );
     }
 
     private void getQueue() {
 
         final String id = queueid.getText().toString().trim();
+        String copy_url = view_queue_url;
 
-        url = url + id;
+        copy_url = copy_url + id;
 
         if (TextUtils.isEmpty( id )) {
             // Queue ID is empty
@@ -73,7 +66,7 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, copy_url,
                 new Response.Listener<String>() {
 
                     @Override
@@ -81,7 +74,10 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
 
                         try {
 
-                            label.setText( response );
+                            JSONObject object = new JSONObject( response );
+
+                            label.setText( "Current Position : ");
+                            label.append( object.getString( "position" ) );
 
                         } catch (Exception e) {
 
@@ -102,47 +98,18 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
         requestQueue.add( stringRequest );
     }
 
-    private void checkIfRegistered() {
-
-        SharedPreferences shared = getSharedPreferences("MyPrefs" , Context.MODE_PRIVATE);
-
-        String token = shared.getString( "token" , null );
-        //String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjI3LCJpc3MiOiJodHRwOlwvXC9lYzItMzQtMjEwLTE2LTQwLnVzLXdlc3QtMi5jb21wdXRlLmFtYXpvbmF3cy5jb206ODAwMFwvYXBpXC9zaWduaW4iLCJpYXQiOjE0OTI1MzA4MTgsImV4cCI6MTQ5MjUzNDQxOCwibmJmIjoxNDkyNTMwODE4LCJqdGkiOiJiZTQ4YzM0YjM4ODBhZWU0ZTNmNWQxNDgyNzI1MjEyZCJ9.zSMf5oEpPRt856LKJJ5FWZrpp5mjY-kDBK8EDXF47qw";
-
-        if( token == null ) {
-
-            // Prompt for Registration
-            Intent i = new Intent(LaunchActivity.this , RegisterActivity.class);
-
-            startActivity( i );
-
-        }
-
-        else {
-
-            Toast.makeText(LaunchActivity.this, "Length : " + token.length(), Toast.LENGTH_LONG).show();
-
-            Intent i = new Intent(LaunchActivity.this , PublishActivity.class);
-
-            i.putExtra( "token" , token );
-            startActivity( i );
-        }
-
-    }
-
     @Override
     public void onClick(View view) {
+
         if ( view == viewButton ) {
             getQueue();
         }
 
-        if( view == publishButton ) {
-            checkIfRegistered();
-        }
+        if ( view == proceedButton ) {
 
-        if ( view == register ) {
-            Intent i = new Intent(LaunchActivity.this , RegisterActivity.class);
+            Intent i = new Intent( LaunchActivity.this , ChoiceActivity.class );
             startActivity( i );
+
         }
     }
 }

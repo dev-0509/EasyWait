@@ -1,7 +1,9 @@
 package com.example.weapon_x.smartq;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -41,9 +43,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_EMAIL = "email";
 
-    private String usertoken;
+    private String user_token;
+    private String user_email;
+    private String user_pass;
 
     private Button button;
+
+    private FloatingActionButton home;
+
     private EditText name;
     private EditText email;
     private EditText password;
@@ -55,26 +62,26 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         button = (Button) findViewById(R.id.buttonRegister);
 
+        home = (FloatingActionButton) findViewById(R.id.homeFAB);
+
         name = (EditText) findViewById(R.id.editTextName);
         email = (EditText) findViewById(R.id.editTextEmail);
         password = (EditText) findViewById(R.id.editTextPassword);
 
         button.setOnClickListener( this );
+        home.setOnClickListener( this );
     }
 
-    public void saveToken( ) {
-        Toast.makeText(RegisterActivity.this, "Save Token Called "+ usertoken,
-                Toast.LENGTH_SHORT).show();
+    public void saveUserCredentials() {
 
         SharedPreferences sharedpreferences = getSharedPreferences(MyPreferences, Context.MODE_APPEND);
 
         SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putString("token", usertoken);
+        editor.putString("token" , user_token);
+        editor.putString("email" , user_email);
+        editor.putString("password" , user_pass);
         editor.apply();
 
-        String token = sharedpreferences.getString( "token" , null );
-
-        Toast.makeText(RegisterActivity.this, "Length : " + token.length(), Toast.LENGTH_SHORT).show();
     }
 
     private void registerUser() {
@@ -111,19 +118,24 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                             JSONObject json = new JSONObject(response);
 
-                            usertoken = json.getString( "token" );
+                            user_token = json.getString("token");
+                            user_email = useremail;
+                            user_pass = pass;
 
-                            if( TextUtils.isEmpty( usertoken ) )
+                            if (TextUtils.isEmpty(user_token))
                                 Toast.makeText(RegisterActivity.this, "Registration Failed :(\nBe careful",
                                         Toast.LENGTH_SHORT).show();
                             else {
 
-                                RegisterActivity.this.saveToken();
+                                RegisterActivity.this.saveUserCredentials();
+
+                                Toast.makeText(RegisterActivity.this, "Welcome to SmartQ !", Toast.LENGTH_LONG).show();
 
                                 finish();
                             }
+                        }
 
-                       } catch ( Exception e) {
+                        catch ( Exception e) {
 
                            e.printStackTrace();
 
@@ -159,55 +171,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         }
 
+        if( view == home ) {
+            Intent i = new Intent(RegisterActivity.this , LaunchActivity.class);
+            startActivity( i );
+        }
     }
 }
-//
-//class myAsyncTask extends AsyncTask< Void, Void, String > {
-//    EditText _name;
-//
-//    public void setOutputWindow(EditText name)
-//    {
-//        _name = name;
-//    }
-//    @Override
-//    protected String doInBackground(Void... params) {
-//
-//        URL url;
-//        String result = "";
-//        HttpURLConnection urlConnection = null;
-//
-//        // HTTP Get
-//        try {
-//            url = new URL("http://ec2-34-210-16-40.us-west-2.compute.amazonaws.com:8000/api/queue/10");
-//
-//            urlConnection = (HttpURLConnection) url
-//                    .openConnection();
-//
-//            InputStream in = urlConnection.getInputStream();
-//            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-//            String line;
-//            StringBuilder sb= new StringBuilder();
-//            while( (line = reader.readLine()) != null )
-//            {
-//                sb.append(line) ;
-//            }
-//
-//            result = sb.toString();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (urlConnection != null) {
-//                urlConnection.disconnect();
-//            }
-//        }
-//        return result;
-//    }
-//
-//    @Override
-//    protected void onPostExecute(String result) {
-//
-//        _name.setText( result );
-//        Log.i("FromOnPostExecute", result);
-//    }
-//}

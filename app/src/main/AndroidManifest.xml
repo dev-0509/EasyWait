@@ -14,19 +14,19 @@
         <activity
             android:name=".LoginActivity"
             android:label="Let&apos;s Go !" />
-        <activity android:name=".HomeActivity"></activity>
         <activity
             android:name=".RegisterActivity"
-            android:label="Let&apos;s Get Familiar :)"></activity>
-        <activity
-            android:name=".LaunchActivity" >
+            android:label="Let&apos;s Get Familiar :)" />
+        <activity android:name=".LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PublishActivity"></activity>
+        <activity android:name=".PublishActivity" />
+        <activity android:name=".ChoiceActivity" />
+        <activity android:name=".AppointmentsActivity"></activity>
     </application>
 
 </manifest>

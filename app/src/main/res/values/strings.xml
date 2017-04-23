@@ -1,22 +1,27 @@
 <resources>
     <string name="app_name">SmartQ</string>
-
     <!-- Strings related to login -->
+
+    <string name="debug">false</string>
     <string name="prompt_email">Got an Email ?</string>
     <string name="prompt_name">What should I call you ?</string>
     <string name="prompt_password">Your Password</string>
-    <string name="action_signup">New to SmartQ ? SIGNUP :)</string>
+    <string name="action_signup">NEW TO SMARTQ ?\n\nSIGNUP</string>
     <string name="action_register">Register</string>
-    <string name="action_signin">Existing User ? SIGNIN</string>
+    <string name="action_signin">Existing User ?\n\nSIGNIN</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="queue_id">Queue ID</string>
     <string name="queue_add">Give your Queue a name</string>
-    <string name="queue_no">Queue No.</string>
+    <string name="Queue_cur_position">Current Position</string>
     <string name="queue_name">Queue Name</string>
     <string name="queue_state">Status</string>
+    <string name="bookappointment">Book An Appointment</string>
+    <string name="availablequeues">Available\nQueues</string>
+    <string name="hint_queueid">Queue ID</string>
+    <string name="acceptingappointments">Accepting Appointments</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
