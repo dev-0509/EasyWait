@@ -33,7 +33,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private String url = "http://ec2-34-210-16-40.us-west-2.compute.amazonaws.com:8000/api/signup";
