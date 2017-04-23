@@ -104,7 +104,7 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
                             int temp = 0;
 
                             JSONObject object = new JSONObject( response );
-                            Toast.makeText(PublishActivity.this , response, Toast.LENGTH_LONG).show();
+
                             JSONArray queue = object.getJSONArray("queues");
 
                             for(int i = 0 ; i < queue.length() ; i++) {

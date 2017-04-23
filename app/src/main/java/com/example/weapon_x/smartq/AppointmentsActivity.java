@@ -54,6 +54,8 @@ public class AppointmentsActivity extends AppCompatActivity implements View.OnCl
     private FloatingActionButton search;
     private FloatingActionButton home;
 
+    private boolean status;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -106,102 +108,52 @@ public class AppointmentsActivity extends AppCompatActivity implements View.OnCl
 
     }
 
-    private void checkIfAppointmentsOpen(String q_id) {
-
-        String copy_url = manage_q_url;
-
-        copy_url = copy_url + q_id;
-
-        if( TextUtils.isEmpty( q_id ) ) {
-
-            Toast toast = Toast.makeText(AppointmentsActivity.this , "Please Specify a Queue ID !", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER , 0 , 0);
-            toast.show();
-            return;
-
-        }
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, copy_url,
-                new Response.Listener<String>() {
-
-                    @Override
-                    public void onResponse(String response) {
-
-                        try {
-
-                            JSONObject object = new JSONObject( response );
-
-                            if ( object.getString( "accepting_appointments" ).equals( "1" )) {
-
-                                switchButton.setChecked( true );
-
-                            } else {
-
-                                switchButton.setChecked( false );
-
-                            }
-
-                        } catch (Exception e) {
-
-                            e.printStackTrace();
-
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(AppointmentsActivity.this, error.toString(), Toast.LENGTH_LONG).show();
-                    }
-                });
-
-        RequestQueue requestQueue = Volley.newRequestQueue( this );
-        requestQueue.add( stringRequest );
-
-    }
-
-    private void setAppointmentStatus(final String action) {
+    private void populateListOfQueues () {
 
         final SharedPreferences shared = getSharedPreferences("MyPrefs" , Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = shared.edit();
+
+        fetchAccessToken();
 
         final String token = shared.getString( "token" , null );
 
-        String q_id = queue_id.getText().toString().trim() , copy_url = manage_q_url;
-
-        if( TextUtils.isEmpty( q_id ) ) {
-
-            Toast toast = Toast.makeText(AppointmentsActivity.this , "Please Specify a Queue ID !", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER , 0 , 0);
-            toast.show();
-            return;
-
-        }
-
-        copy_url = copy_url + q_id + "/appointment";
-
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, copy_url,
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, fetch_queues_url,
                 new Response.Listener<String>() {
-
                     @Override
                     public void onResponse(String response) {
 
                         try {
 
+                            int temp = 0;
+
                             JSONObject object = new JSONObject( response );
 
-                            if ( object.getString( "accepting_appointments" ).equals( "1" )) {
+                            String string = object.toString();
+                            JSONObject error_status = new JSONObject( string );
 
-                                Toast toast = Toast.makeText(AppointmentsActivity.this, "You are accepting Appointments", Toast.LENGTH_LONG);
-                                toast.setGravity(Gravity.CENTER, 0, 0);
-                                toast.show();
+                            if ( error_status.getString( "error" ).equals( "true" ) ) {
+
+                                if ( error_status.getString( "message" ).equals( "no queues available" ) ) {
+
+                                    view_qlist.setText( "No Queues Available" );
+
+                                }
 
                             } else {
 
-                                Toast toast = Toast.makeText(AppointmentsActivity.this, "You are not accepting any Appointments", Toast.LENGTH_LONG);
-                                toast.setGravity(Gravity.CENTER, 0, 0);
-                                toast.show();
+                                JSONArray queue = object.getJSONArray( "queues" );
 
+                                for (int i = 0; i < queue.length(); i++) {
+                                    JSONObject object1 = (JSONObject) queue.get(i);
+                                    String id = object1.getString( "id" );
+
+                                    if (temp == 0) {
+                                        view_qlist.setText(id + "\n");
+                                        ++temp;
+                                    } else {
+                                        view_qlist.append(id + "\n");
+                                    }
+                                }
                             }
 
                         } catch ( Exception e) {
@@ -215,19 +167,14 @@ public class AppointmentsActivity extends AppCompatActivity implements View.OnCl
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText( AppointmentsActivity.this , error.toString(), Toast.LENGTH_LONG).show();
-                    }
 
+                        Toast.makeText(AppointmentsActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+
+                    }
                 }) {
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put(KEY_ACTION, action);
-                return params;
-            }
-            @Override
-            public Map<String, String> getHeaders () throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
+            public Map<String , String> getHeaders() throws AuthFailureError {
+                Map<String , String> headers = new HashMap<>();
 
                 String auth = "Bearer " + token;
                 headers.put("Authorization", auth);
@@ -238,7 +185,6 @@ public class AppointmentsActivity extends AppCompatActivity implements View.OnCl
 
         RequestQueue requestQueue = Volley.newRequestQueue( this );
         requestQueue.add( stringRequest );
-
     }
 
     private void fetchAccessToken() {
@@ -304,52 +250,52 @@ public class AppointmentsActivity extends AppCompatActivity implements View.OnCl
 
     }
 
-    private void populateListOfQueues () {
+    private void setAppointmentStatus(final String action) {
 
         final SharedPreferences shared = getSharedPreferences("MyPrefs" , Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = shared.edit();
-
-        fetchAccessToken();
 
         final String token = shared.getString( "token" , null );
 
-        final StringRequest stringRequest = new StringRequest(Request.Method.GET, fetch_queues_url,
+        final String q_id = queue_id.getText().toString().trim();
+        String copy_url = manage_q_url;
+
+        if( TextUtils.isEmpty( q_id ) ) {
+
+            Toast toast = Toast.makeText(AppointmentsActivity.this , "Please Specify a Queue ID !", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER , 0 , 0);
+            toast.show();
+            return;
+
+        }
+
+        copy_url = copy_url + q_id + "/appointment";
+
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, copy_url,
                 new Response.Listener<String>() {
+
                     @Override
                     public void onResponse(String response) {
 
                         try {
 
-                            int temp = 0;
-
                             JSONObject object = new JSONObject( response );
 
-                            String string = object.toString();
-                            JSONObject error_status = new JSONObject( string );
+                            if ( object.getString( "accepting_appointments" ).equals( "1" )) {
 
-                            if ( error_status.getString( "error" ).equals( "true" ) ) {
-
-                                if ( error_status.getString( "message" ).equals( "no queues available" ) ) {
-
-                                    view_qlist.setText( "No Queues Available" );
-
-                                }
+                                Toast toast = Toast.makeText(AppointmentsActivity.this,
+                                        "Queue " + q_id + " is open for Appointments",
+                                        Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.CENTER, 0, 120);
+                                toast.show();
 
                             } else {
 
-                                JSONArray queue = object.getJSONArray( "queues" );
+                                Toast toast = Toast.makeText(AppointmentsActivity.this,
+                                        "Queue " + q_id + " is not accepting any Appointments",
+                                        Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.CENTER, 0, 120);
+                                toast.show();
 
-                                    for (int i = 0; i < queue.length(); i++) {
-                                        JSONObject object1 = (JSONObject) queue.get(i);
-                                        String id = object1.getString( "id" );
-
-                                        if (temp == 0) {
-                                            view_qlist.setText(id + "\n");
-                                            ++temp;
-                                        } else {
-                                            view_qlist.append(id + "\n");
-                                        }
-                                    }
                             }
 
                         } catch ( Exception e) {
@@ -363,14 +309,19 @@ public class AppointmentsActivity extends AppCompatActivity implements View.OnCl
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
-                        Toast.makeText(AppointmentsActivity.this, error.toString(), Toast.LENGTH_LONG).show();
-
+                        Toast.makeText( AppointmentsActivity.this , error.toString(), Toast.LENGTH_LONG).show();
                     }
+
                 }) {
             @Override
-            public Map<String , String> getHeaders() throws AuthFailureError {
-                Map<String , String> headers = new HashMap<>();
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put(KEY_ACTION, action);
+                return params;
+            }
+            @Override
+            public Map<String, String> getHeaders () throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
 
                 String auth = "Bearer " + token;
                 headers.put("Authorization", auth);
@@ -381,6 +332,72 @@ public class AppointmentsActivity extends AppCompatActivity implements View.OnCl
 
         RequestQueue requestQueue = Volley.newRequestQueue( this );
         requestQueue.add( stringRequest );
+
+    }
+
+    private void checkIfAppointmentsOpen(final String q_id) {
+
+        String copy_url = manage_q_url;
+
+        copy_url = copy_url + q_id;
+
+        if( TextUtils.isEmpty( q_id ) ) {
+
+            Toast toast = Toast.makeText(AppointmentsActivity.this , "Please Specify a Queue ID !", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER , 0 , 0);
+            toast.show();
+            return;
+
+        }
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, copy_url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+
+                            JSONObject object = new JSONObject( response );
+
+                            if ( object.getString( "accepting_appointments" ).equals( "1" )) {
+
+                                status = true;
+
+                                switchButton.setChecked( true );
+
+                            } else {
+
+                                status = false;
+
+                                switchButton.setChecked( false );
+
+                                Toast toast = Toast.makeText(AppointmentsActivity.this,
+                                        "Queue " + q_id + " is not accepting any Appointments",
+                                        Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.CENTER, 0, 120);
+                                toast.show();
+
+                            }
+
+                        } catch (Exception e) {
+
+                            e.printStackTrace();
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(AppointmentsActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue( this );
+        requestQueue.add( stringRequest );
+
     }
 
     public void onClick(View view) {
@@ -392,7 +409,7 @@ public class AppointmentsActivity extends AppCompatActivity implements View.OnCl
             if( TextUtils.isEmpty( q_id ) ) {
 
                 Toast toast = Toast.makeText(AppointmentsActivity.this , "Please Specify a Queue ID !", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER , 0 , 0);
+                toast.setGravity(Gravity.CENTER , 0 , 105);
                 toast.show();
                 return;
 
@@ -409,9 +426,30 @@ public class AppointmentsActivity extends AppCompatActivity implements View.OnCl
             if( TextUtils.isEmpty( q_id ) ) {
 
                 Toast toast = Toast.makeText(AppointmentsActivity.this , "Please Specify a Queue ID !", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER , 0 , 0);
+                toast.setGravity(Gravity.CENTER , 0 , 105);
                 toast.show();
                 return;
+
+            }
+
+            checkIfAppointmentsOpen( q_id );
+
+            if( status ) {
+
+                final SharedPreferences shared = getSharedPreferences("MyPrefs" , Context.MODE_PRIVATE);
+                final SharedPreferences.Editor editor = shared.edit();
+
+                editor.putString( "queue_id" , q_id );
+                editor.apply();
+
+                Intent i = new Intent(AppointmentsActivity.this , BookingsActivity.class);
+                startActivity( i );
+
+            } else {
+
+                Toast toast = Toast.makeText(AppointmentsActivity.this , "Appointments Closed !\n\n\t\tPlease try later", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER , 0 , 110);
+                toast.show();
 
             }
 

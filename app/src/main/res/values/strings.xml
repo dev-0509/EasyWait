@@ -3,6 +3,7 @@
     <!-- Strings related to login -->
 
     <string name="debug">false</string>
+    <string name="home">Home Image</string>
     <string name="prompt_email">Got an Email ?</string>
     <string name="prompt_name">What should I call you ?</string>
     <string name="prompt_password">Your Password</string>
@@ -22,6 +23,14 @@
     <string name="availablequeues">Available\nQueues</string>
     <string name="hint_queueid">Queue ID</string>
     <string name="acceptingappointments">Accepting Appointments</string>
+    <string name="reference_string">Name your Appointment</string>
+    <string name="cancel_appointment">Queue Position to Cancel</string>
+    <string name="book">Book</string>
+    <string name="cancel">Cancel</string>
+    <string name="fetch_appointments">View Appointments</string>
+    <string name="all_appointments">Booked Appointments</string>
+    <string name="appointment_admin">Appointment Administration</string>
+    <string name="publish">Publish Queues</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
