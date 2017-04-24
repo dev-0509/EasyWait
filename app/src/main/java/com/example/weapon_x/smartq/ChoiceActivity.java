@@ -104,7 +104,7 @@ public class ChoiceActivity extends AppCompatActivity implements View.OnClickLis
                                 JSONObject json = new JSONObject(response);
 
                                 access_token = json.getString( "token" );
-                                editor.putString( "access_token" , access_token );
+                                editor.putString( "token" , access_token );
                                 editor.apply();
 
                             } catch ( Exception e) {
@@ -173,9 +173,13 @@ public class ChoiceActivity extends AppCompatActivity implements View.OnClickLis
 
             checkIfRegistered();
 
+            final SharedPreferences shared = getSharedPreferences("MyPrefs" , Context.MODE_PRIVATE);
+
+            String token = shared.getString( "token" , null );
+
             Intent i = new Intent(ChoiceActivity.this , PublishActivity.class);
 
-            i.putExtra( "token" , access_token );
+            i.putExtra( "token" , token );
             startActivity( i );
 
         }

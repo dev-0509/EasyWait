@@ -104,8 +104,8 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
                             int temp = 0;
 
                             JSONObject object = new JSONObject( response );
-
-                            JSONArray queue = object.getJSONArray("queues");
+    
+                            JSONArray queue = object.getJSONArray("queuelist");
 
                             for(int i = 0 ; i < queue.length() ; i++) {
                                 JSONObject object1 = (JSONObject) queue.get(i);
