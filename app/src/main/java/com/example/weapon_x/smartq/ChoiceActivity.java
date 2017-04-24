@@ -70,7 +70,7 @@ public class ChoiceActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    private void checkIfRegistered() {
+    private void checkIfRegistered(final View view) {
 
         final SharedPreferences shared = getSharedPreferences("MyPrefs" , Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = shared.edit();
@@ -82,11 +82,11 @@ public class ChoiceActivity extends AppCompatActivity implements View.OnClickLis
         if( token == null ) {
 
             // Prompt for Registration
-            Toast toast = Toast.makeText(ChoiceActivity.this , "Please Register :(", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(ChoiceActivity.this , "Please Login or Register :(", Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER , 0 , 0);
             toast.show();
 
-            Intent i = new Intent(ChoiceActivity.this , RegisterActivity.class);
+            Intent i = new Intent(ChoiceActivity.this , LoginActivity.class);
 
             startActivity( i );
 
@@ -107,6 +107,22 @@ public class ChoiceActivity extends AppCompatActivity implements View.OnClickLis
                                 editor.putString( "token" , access_token );
                                 editor.apply();
 
+                                if ( view == publishButton ) {
+
+                                    String token = shared.getString( "token" , null );
+
+                                    Intent i = new Intent(ChoiceActivity.this , PublishActivity.class);
+
+                                    i.putExtra( "token" , token );
+                                    startActivity( i );
+
+                                } else if ( view == appointmentsButton ) {
+
+                                    Intent i = new Intent(ChoiceActivity.this, AppointmentsActivity.class);
+                                    startActivity(i);
+
+                                }
+
                             } catch ( Exception e) {
 
                                 e.printStackTrace();
@@ -119,13 +135,14 @@ public class ChoiceActivity extends AppCompatActivity implements View.OnClickLis
                         @Override
                         public void onErrorResponse(VolleyError error) {
 
-                            Intent i = new Intent(ChoiceActivity.this , RegisterActivity.class);
+                            Intent i = new Intent(ChoiceActivity.this , LoginActivity.class);
 
-                            Toast toast = Toast.makeText(ChoiceActivity.this , "Please Register :(", Toast.LENGTH_LONG);
+                            Toast toast = Toast.makeText(ChoiceActivity.this , "Please Login or Register :(", Toast.LENGTH_LONG);
                             toast.setGravity(Gravity.CENTER , 0 , 0);
                             toast.show();
 
                             startActivity( i );
+
                         }
                     }) {
                 @Override
@@ -171,16 +188,7 @@ public class ChoiceActivity extends AppCompatActivity implements View.OnClickLis
 
         if( view == publishButton ) {
 
-            checkIfRegistered();
-
-            final SharedPreferences shared = getSharedPreferences("MyPrefs" , Context.MODE_PRIVATE);
-
-            String token = shared.getString( "token" , null );
-
-            Intent i = new Intent(ChoiceActivity.this , PublishActivity.class);
-
-            i.putExtra( "token" , token );
-            startActivity( i );
+            checkIfRegistered( view );
 
         }
 
@@ -193,10 +201,7 @@ public class ChoiceActivity extends AppCompatActivity implements View.OnClickLis
 
         if ( view == appointmentsButton ) {
 
-            checkIfRegistered();
-
-            Intent i = new Intent(ChoiceActivity.this, AppointmentsActivity.class);
-            startActivity(i);
+            checkIfRegistered( view );
 
         }
     }

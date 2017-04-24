@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private Button button;
 
+    private FloatingActionButton register;
     private FloatingActionButton home;
 
     private EditText email;
@@ -54,6 +56,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         button = (Button) findViewById(R.id.buttonSignin);
 
+        register = (FloatingActionButton) findViewById(R.id.registerFAB);
         home = (FloatingActionButton) findViewById(R.id.homeFAB);
 
         email = (EditText) findViewById(R.id.editUserEmail);
@@ -61,6 +64,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         button.setOnClickListener( this );
         home.setOnClickListener( this );
+        register.setOnClickListener( this );
+
     }
 
     public void saveUserCredentials() {
@@ -124,16 +129,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
+
                         Toast.makeText(LoginActivity.this, "Invalid Credentials !", Toast.LENGTH_LONG).show();
+
                     }
                 }) {
             @Override
-            protected Map<String, String> getParams()
-            {
+            protected Map<String, String> getParams() {
+
                 Map<String, String> params = new HashMap<String, String>();
                 params.put(KEY_EMAIL, useremail);
                 params.put(KEY_PASSWORD, pass);
                 return params;
+
             }
         };
 
@@ -145,12 +153,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
 
         if( view == button ) {
+
             loginUser();
+
         }
 
         if( view == home ) {
+
             Intent i = new Intent(LoginActivity.this , LaunchActivity.class);
             startActivity( i );
+
         }
+
+        if( view == register ) {
+
+            Intent i = new Intent(LoginActivity.this , RegisterActivity.class);
+            startActivity( i );
+
+        }
+
     }
+
 }

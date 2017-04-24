@@ -162,7 +162,7 @@ public class AppointmentsActivity extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
-                        Toast.makeText(AppointmentsActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(AppointmentsActivity.this, "Server is taking too long to respond\n\nPlease refresh your connection" , Toast.LENGTH_LONG).show();
 
                     }
                 }) {
@@ -217,7 +217,7 @@ public class AppointmentsActivity extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
-                        Toast.makeText(AppointmentsActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(AppointmentsActivity.this, "Server is taking too long to respond\n\nPlease refresh your connection" , Toast.LENGTH_LONG).show();
 
                     }
                 }) {
@@ -303,7 +303,7 @@ public class AppointmentsActivity extends AppCompatActivity implements View.OnCl
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText( AppointmentsActivity.this , error.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText( AppointmentsActivity.this , "Server is taking too long to respond\n\nPlease refresh your connection" , Toast.LENGTH_LONG).show();
                     }
 
                 }) {
@@ -385,7 +385,9 @@ public class AppointmentsActivity extends AppCompatActivity implements View.OnCl
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(AppointmentsActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+
+                        Toast.makeText(AppointmentsActivity.this, "Server is taking too long to respond\n\nPlease refresh your connection" , Toast.LENGTH_LONG).show();
+
                     }
                 });
 

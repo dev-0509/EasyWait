@@ -64,6 +64,7 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
             // Queue ID is empty
             Toast.makeText(this, "Please specify a Queue ID !", Toast.LENGTH_SHORT).show();
             return;
+
         }
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, copy_url,
@@ -90,8 +91,11 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(LaunchActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+
+                        Toast.makeText(LaunchActivity.this , "Server is taking too long to respond\n\nPlease refresh your connection" , Toast.LENGTH_LONG).show();
+
                     }
+
                 });
 
         RequestQueue requestQueue = Volley.newRequestQueue( this );
@@ -102,7 +106,9 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
 
         if ( view == viewButton ) {
+
             getQueue();
+
         }
 
         if ( view == proceedButton ) {

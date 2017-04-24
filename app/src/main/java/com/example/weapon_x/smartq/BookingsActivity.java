@@ -179,7 +179,7 @@ public class BookingsActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
-                        Toast.makeText( BookingsActivity.this , error.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText( BookingsActivity.this , "Server is taking too long to respond\n\nPlease refresh your connection" , Toast.LENGTH_LONG).show();
 
                     }
 
@@ -278,7 +278,7 @@ public class BookingsActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
-                        Toast.makeText( BookingsActivity.this , error.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText( BookingsActivity.this , "Server is taking too long to respond\n\nPlease refresh your connection" , Toast.LENGTH_LONG).show();
 
                     }
 

@@ -80,6 +80,7 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
         movenext_button.setOnClickListener( this );
         reset_button.setOnClickListener( this );
         home.setOnClickListener( this );
+
     }
 
     private void createQueue() {
@@ -90,12 +91,15 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
         final String token = data.getString( "token" );
 
         if( TextUtils.isEmpty( queuename ) ) {
+
             Toast.makeText( PublishActivity.this , "Please Specify a Queue Name !", Toast.LENGTH_LONG).show();
             return;
+
         }
 
         final StringRequest stringRequest = new StringRequest(Request.Method.POST, add_queue_url,
                 new Response.Listener<String>() {
+
                     @Override
                     public void onResponse(String response) {
 
@@ -104,7 +108,7 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
                             int temp = 0;
 
                             JSONObject object = new JSONObject( response );
-    
+
                             JSONArray queue = object.getJSONArray("queuelist");
 
                             for(int i = 0 ; i < queue.length() ; i++) {
@@ -125,53 +129,43 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
 
                         }
                     }
+
                 },
                 new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
-                        String json = "";
-                        String string = "";
-                        NetworkResponse response = error.networkResponse;
-
-                        if( response.statusCode == 401 ) {
-
-                            json = new String( response.data );
-
-                            try {
-                                JSONObject object = new JSONObject( json );
-                                string = object.toString();
-                            }
-                            catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
                             Intent i = new Intent(PublishActivity.this , RegisterActivity.class);
 
-                            Toast toast = Toast.makeText(PublishActivity.this , string, Toast.LENGTH_LONG);
+                            Toast toast = Toast.makeText(PublishActivity.this , "Server is taking too long to respond\n\nPlease refresh your connection", Toast.LENGTH_LONG);
                             toast.setGravity(Gravity.CENTER , 0 , 0);
                             toast.show();
 
                             startActivity( i );
+
                         }
-                    }
+
                 }) {
             @Override
             protected Map<String, String> getParams() {
+
                 Map<String, String> params = new HashMap<String, String>();
                 params.put(KEY_QUEUENAME, queuename);
                 return params;
+
             }
 
             @Override
             public Map<String , String> getHeaders() throws AuthFailureError {
+
                 Map<String , String> headers = new HashMap<>();
 
                 String auth = "Bearer " + token;
                 headers.put("Authorization", auth);
 
                 return headers;
+
             }
         };
 
@@ -186,8 +180,10 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
         String copy_url = manage_queue_url;
 
         if( TextUtils.isEmpty( q_id ) ) {
+
             Toast.makeText( PublishActivity.this , "Please Specify a Queue ID !", Toast.LENGTH_LONG).show();
             return;
+
         }
 
         copy_url = copy_url + q_id;
@@ -206,9 +202,13 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
                             queue_position.setText( object.getString( "position" ) );
 
                             if ( ( object.getString( "servicestarted" ) ) == null ) {
+
                                 queue_state.setText( "Not In Service" );
+
                             } else {
+
                                 queue_state.setText( "In Service" );
+
                             }
 
                         } catch ( Exception e) {
@@ -223,7 +223,8 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
-                        Toast.makeText( PublishActivity.this , error.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText( PublishActivity.this , "Server is taking too long to respond\n\nPlease refresh your connection", Toast.LENGTH_LONG).show();
+
                     }
                 });
 
@@ -243,8 +244,10 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
         copy_url = copy_url + q_id;
 
         if( TextUtils.isEmpty( q_id ) ) {
+
             Toast.makeText( PublishActivity.this , "Please Specify a Queue ID !", Toast.LENGTH_LONG).show();
             return;
+
         }
 
         final StringRequest stringRequest = new StringRequest(Request.Method.POST, copy_url,
@@ -271,7 +274,9 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText( PublishActivity.this , error.toString(), Toast.LENGTH_LONG).show();
+
+                        Toast.makeText( PublishActivity.this , "Server is taking too long to respond\n\nPlease refresh your connection", Toast.LENGTH_LONG).show();
+
                     }
 
                 }) {
@@ -308,8 +313,10 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
         copy_url = copy_url + q_id;
 
         if( TextUtils.isEmpty( q_id ) ) {
+
             Toast.makeText( PublishActivity.this , "Please Specify a Queue ID !", Toast.LENGTH_LONG).show();
             return;
+
         }
 
         final StringRequest stringRequest = new StringRequest(Request.Method.POST, copy_url,
@@ -336,7 +343,9 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText( PublishActivity.this , error.toString() , Toast.LENGTH_LONG).show();
+
+                        Toast.makeText( PublishActivity.this , "Server is taking too long to respond\n\nPlease refresh your connection" , Toast.LENGTH_LONG).show();
+
                     }
 
                 }) {
@@ -396,4 +405,5 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
 
         }
     }
+
 }

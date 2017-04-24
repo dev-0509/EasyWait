@@ -49,6 +49,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private Button button;
 
     private FloatingActionButton home;
+    private FloatingActionButton login;
 
     private EditText name;
     private EditText email;
@@ -62,6 +63,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         button = (Button) findViewById(R.id.buttonRegister);
 
         home = (FloatingActionButton) findViewById(R.id.homeFAB);
+        login = (FloatingActionButton) findViewById(R.id.loginFAB);
 
         name = (EditText) findViewById(R.id.editTextName);
         email = (EditText) findViewById(R.id.editTextEmail);
@@ -69,6 +71,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         button.setOnClickListener( this );
         home.setOnClickListener( this );
+        login.setOnClickListener( this );
     }
 
     public void saveUserCredentials() {
@@ -144,7 +147,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(RegisterActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+
+                        Toast.makeText(RegisterActivity.this, "Server is taking too long to respond\n\nPlease refresh your connection" , Toast.LENGTH_LONG).show();
+
                     }
                 }) {
             @Override
@@ -171,8 +176,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
 
         if( view == home ) {
+
             Intent i = new Intent(RegisterActivity.this , LaunchActivity.class);
             startActivity( i );
+
         }
+
+        if( view == login ) {
+
+            Intent i = new Intent(RegisterActivity.this , LoginActivity.class);
+            startActivity( i );
+
+        }
+
     }
+
 }
