@@ -1,4 +1,4 @@
-package com.example.weapon_x.smartq;
+package com.smartq.weapon_x.smartq;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

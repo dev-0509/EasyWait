@@ -1,4 +1,4 @@
-package com.example.weapon_x.smartq;
+package com.smartq.weapon_x.smartq;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,8 +10,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -22,12 +20,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.weapon_x.smartq.RegisterActivity.MyPreferences;
+import static com.smartq.weapon_x.smartq.RegisterActivity.MyPreferences;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.weapon_x.smartq">
+    package="com.smartq.weapon_x.smartq">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,22 +12,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LoginActivity"
+            android:name="com.smartq.weapon_x.smartq.LoginActivity"
             android:label="Let&apos;s Go !" />
         <activity
-            android:name=".RegisterActivity"
+            android:name="com.smartq.weapon_x.smartq.RegisterActivity"
             android:label="Let&apos;s Get Familiar :)" />
-        <activity android:name=".LaunchActivity">
+        <activity android:name="com.smartq.weapon_x.smartq.LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PublishActivity" />
-        <activity android:name=".ChoiceActivity" />
-        <activity android:name=".BookingsActivity" />
-        <activity android:name=".AppointmentsActivity"></activity>
+        <activity android:name="com.smartq.weapon_x.smartq.PublishActivity" />
+        <activity android:name="com.smartq.weapon_x.smartq.ChoiceActivity" />
+        <activity android:name="com.smartq.weapon_x.smartq.BookingsActivity" />
+        <activity android:name="com.smartq.weapon_x.smartq.AppointmentsActivity"></activity>
     </application>
 
 </manifest>

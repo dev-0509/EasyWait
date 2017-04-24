@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background2"
-    tools:context="com.example.weapon_x.smartq.BookingsActivity">
+    tools:context="com.smartq.weapon_x.smartq.BookingsActivity">
 
     <Button
         android:id="@+id/fetch_appointments"
